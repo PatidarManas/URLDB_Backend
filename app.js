@@ -1,7 +1,9 @@
 import express from "express";
 import cookieParser from "cookie-parser";
 import cors from "cors";
-import router from "./routes/Adminroutes.js";
+import { apiSecretMiddleware } from "./middlewares/ApiMiddlewares.js";
+import { Apiroute } from "./routes/ApiRoutes.js";
+import { userRoutes } from "./routes/UserRoutes.js.js";
 
 
 const app = express();
@@ -24,7 +26,9 @@ app.use(
 
 export default app;
 
-app.use("/",router)
+// app.use("/",router)
+app.use("/1/:API_SECRET_KEY",apiSecretMiddleware,Apiroute)
+app.use("/api/",userRoutes)
 
 app.get("/", (req, res) =>
   res.send(
