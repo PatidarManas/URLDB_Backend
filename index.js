@@ -4,7 +4,7 @@ import mongoose from "mongoose";
 import { config } from "dotenv";
 config();
 export const connectDB = async () => {
-  const { connection } = await mongoose.connect("mongodb+srv://manaspatidar170:Nnx1ur1GOxFirhdN@cluster0.y7ctlv4.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0");
+  const { connection } = await mongoose.connect(process.env.MONGO_URI);
   console.log(`MongoDB connected with ${connection.host}`);
 };
 connectDB();
