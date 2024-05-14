@@ -1,4 +1,5 @@
 import { DatabaseModel } from "../models/DatabaseModel.js";
+import { ModalModel } from "../models/ModalModel.js";
 import { UserModel } from "../models/UserModel.js";
 
 export const apiSecretMiddleware = async (req, res, next) => {
@@ -44,7 +45,6 @@ export const checkDbMiddleware = async (req, res, next) => {
   const DB_NAME = await req.params.DB_NAME; // Define DB_NAME here
   // Iterate over the database names asynchronously
   for (const value of req.body.user.Databases_names) {
-    console.log(value)
     if (value == DB_NAME) {
       // Find the specific database
       const specificDb = await DatabaseModel.findOne({
@@ -70,11 +70,11 @@ export const checkDbMiddleware = async (req, res, next) => {
 export const createModalMiddleware = async (req, res, next) => {
   const MODAL_NAME = req.params.MODAL_NAME;
   // Iterate over the database names asynchronously
-  for (const value of req.body.user.Databases_names) {
+  for (const value of req.body.db.Modal_names) {
     if (value === MODAL_NAME) {
       // Find the specific database
       console.log(value);
-      res.status(409).json({"success": false,"msg": "Same Modal Name Already Assigned to this Database"})
+      return res.status(409).json({"success": false,"msg": "Same Modal Name Already Assigned to this Database"})
     }
   }
 
@@ -84,9 +84,14 @@ export const createModalMiddleware = async (req, res, next) => {
 export const checkModalMiddleware = async (req, res, next) => {
   const MODAL_NAME = req.params.MODAL_NAME;
 
-  req?.body?.db?.Modal_names?.map((value) => {
-    if (value == MODAL_NAME) next();
-  });
+  for (const value of req.body.db.Modal_names) {
+    if (value === MODAL_NAME) {
+      // Find the specific database
+      const thisModal = await ModalModel.findOne({Name:MODAL_NAME});
+      req.body.modal= thisModal;
+      return next();
+    }
+  }
 
   return res.status(404).json({
     success: false,

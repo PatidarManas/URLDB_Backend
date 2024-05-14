@@ -7,7 +7,7 @@ import { UserModel } from "../models/UserModel.js";
 export const islogin = async(req,res)=>{
     try {
         if(req.body.user)return res.status(200).json({success:true,user:req.body.user});
-        return res.status(201).json({success:false})
+        return res.status(201).json({success:false,user:req.body.user})
     } catch (error) {
         return res.status(400).json(error);
     }
@@ -18,7 +18,7 @@ export const signup = async(req,res)=>{
         const hashedPassword = await bcrypt.hash(req.body.password, 10);        
         const newuser = await UserModel.create({
             Name:req.body.name,
-            Email:req.body.email,
+            Email:req.body.email.toLowerCase(),
             Password:hashedPassword,
             API_SECRET_KEY: req.body.email[0] + Date.now(),
 
@@ -53,6 +53,18 @@ export const getUserDetails = async(req,res)=>{
         }else{
             return res.status(201).json({success:false,msg:"Invalid Authentication"});
         }
+    } catch (error) {
+        return res.status(400).json({error});       
+    }
+}
+
+
+export const getPremium = async(req,res)=>{
+    try {
+        await UserModel.findByIdAndUpdate(req.body.user._id,{
+            $set:{ isPrimeUser:true}
+        });
+        return res.status(200).json({success:true})
     } catch (error) {
         return res.status(400).json({error});       
     }

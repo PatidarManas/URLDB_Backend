@@ -28,7 +28,7 @@ export const isUserAuthenticatedMiddleware = async (req, res, next) => {
 
 export const signupMiddleware = async (req, res, next) => {
     try {
-        const ifAlreadyUser = await UserModel.findOne({Email:req.body.email});
+        const ifAlreadyUser = await UserModel.findOne({Email:req.body.email.toLowerCase()});
         if(ifAlreadyUser){
            return res.status(205).json({success:false,msg:"Email Already exists"});
         }
@@ -42,7 +42,7 @@ export const loginMiddleware = async (req,res,next)=>{
     try {
         const passFromUser = req.body.password;
 
-        const foundUser = await UserModel.findOne({Email:req.body.email});
+        const foundUser = await UserModel.findOne({Email:req.body.email.toLowerCase()});
         const isPasswordValid = await bcrypt.compare(passFromUser, foundUser.Password);
         if (foundUser && isPasswordValid){
           req.body.user=foundUser;
