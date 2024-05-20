@@ -14,5 +14,5 @@ app.listen(4000, () => {
 });
 
 app.get("/",
-  res.send("hellow")
+  console.log("hellow")
 );
