@@ -13,6 +13,7 @@ app.listen(4000, () => {
   console.log(`Server is working on port: ${process.env.PORT}`);
 });
 
-app.get("/",
-  console.log("hellow")
+app.get("/",(req,res)=>{
+  res.send("heeloow")
+}
 );
