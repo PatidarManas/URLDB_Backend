@@ -42,7 +42,9 @@ app.get("/", (req, res) =>
     `<h1>Site is Working. click <a href=${process.env.FRONTEND_URL}>here</a> to visit frontend.</h1>`
   )
 );
-
-app.listen(4000, () => {
-  console.log(`Server is working on port: ${process.env.PORT}`);
+const port = process.env.PORT || 4000;
+app.listen(port, () => {
+  console.log(`Server is working on port: ${port}`);
 });
+
+module.exports = app;
