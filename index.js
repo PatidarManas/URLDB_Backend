@@ -1,4 +1,4 @@
-import { Analytics } from "@vercel/analytics/react"
+import { inject } from '@vercel/analytics';
 import mongoose from "mongoose";
 import express from "express";
 import cookieParser from "cookie-parser";
@@ -10,6 +10,7 @@ import { config } from "dotenv";
 
 
 config();
+inject();
 
 const app = express();
 app.use(express.json());
