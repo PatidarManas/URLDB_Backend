@@ -1,4 +1,4 @@
-
+import { Analytics } from "@vercel/analytics/react"
 import mongoose from "mongoose";
 import express from "express";
 import cookieParser from "cookie-parser";
